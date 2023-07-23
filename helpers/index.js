@@ -1,3 +1,4 @@
-const HttpError = require("./HttpError");
+const HttpError = require("./HttpErrorHelper");
+const validate = require("./validate");
 
-module.exports = { HttpError };
+module.exports = { HttpError, validate };

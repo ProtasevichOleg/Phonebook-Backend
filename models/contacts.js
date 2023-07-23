@@ -1,5 +1,3 @@
-// models/contacts.js
-
 const fs = require("fs/promises");
 const path = require("path");
 const shortid = require("shortid");

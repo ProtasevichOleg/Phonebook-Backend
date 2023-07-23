@@ -9,7 +9,7 @@ const {
 } = require("../../models/contacts");
 const router = express.Router();
 
-const HttpError = require("../../helpers/HttpError");
+const { HttpError, validate } = require("../../helpers");
 
 const addContactSchema = Joi.object({
   name: Joi.string().min(3).required(),
@@ -36,7 +36,7 @@ router.get("/:contactId", async (req, res, next) => {
   try {
     const contact = await getContactById(req.params.contactId);
     if (!contact) {
-      throw HttpError(404, "Not Found");
+      throw new HttpError(404);
     }
     res.json(contact);
   } catch (error) {
@@ -44,12 +44,8 @@ router.get("/:contactId", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", validate(addContactSchema, "body"), async (req, res, next) => {
   try {
-    const { error } = addContactSchema.validate(req.body);
-    if (error) {
-      throw HttpError(400, error.message);
-    }
     const newContact = await addContact(req.body);
     res.status(201).json(newContact);
   } catch (error) {
@@ -57,27 +53,30 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:contactId", async (req, res, next) => {
-  try {
-    const { error } = updateContactSchema.validate(req.body);
-    if (error) {
-      throw HttpError(400, error.message);
+router.put(
+  "/:contactId",
+  validate(updateContactSchema, "body"),
+  async (req, res, next) => {
+    try {
+      const updatedContact = await updateContact(
+        req.params.contactId,
+        req.body
+      );
+      if (!updatedContact) {
+        throw new HttpError(404, "Not Found");
+      }
+      res.json(updatedContact);
+    } catch (error) {
+      next(error);
     }
-    const updatedContact = await updateContact(req.params.contactId, req.body);
-    if (!updatedContact) {
-      throw HttpError(404, "Not Found");
-    }
-    res.json(updatedContact);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 router.delete("/:contactId", async (req, res, next) => {
   try {
     const deleted = await removeContact(req.params.contactId);
     if (!deleted) {
-      throw HttpError(404, "Not Found");
+      throw new HttpError(404);
     }
     res.status(200).json({ message: "contact deleted" });
   } catch (error) {
