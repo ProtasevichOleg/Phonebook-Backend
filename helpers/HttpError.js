@@ -1,10 +1,7 @@
 class HttpError extends Error {
-  constructor(
-    statusCode = 500,
-    message = messages[statusCode] || messages.default
-  ) {
+  constructor(status = 500, message = messages[status] || messages.default) {
     super(message);
-    this.statusCode = statusCode;
+    this.status = status;
   }
 }
 
@@ -22,4 +19,4 @@ const messages = {
   default: "Something went wrong, please try again later...",
 };
 
-module.exports = HttpError;
+exports.HttpError = HttpError;

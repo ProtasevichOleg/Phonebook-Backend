@@ -1,27 +1,11 @@
 const express = require("express");
-const Joi = require("joi");
-const {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-} = require("../../models/contacts");
+const { schemas, contactOperations } = require("../../models");
+const { listContacts, getContactById, removeContact } = contactOperations;
+const { addContact, updateContact, updateFavoriteStatus } = contactOperations;
+const { addContactSchema, updateContactSchema, updateFavoriteSchema } = schemas;
+
 const router = express.Router();
-
-const { HttpError, validate } = require("../../helpers");
-
-const addContactSchema = Joi.object({
-  name: Joi.string().min(3).required(),
-  email: Joi.string().email().required(),
-  phone: Joi.string().min(10).max(15).required(),
-});
-
-const updateContactSchema = Joi.object({
-  name: Joi.string().min(3).optional(),
-  email: Joi.string().email().optional(),
-  phone: Joi.string().min(10).max(15).optional(),
-}).or("name", "email", "phone");
+const { HttpError, validate, verifyContactExists } = require("../../helpers");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -32,7 +16,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:contactId", async (req, res, next) => {
+router.get("/:contactId", verifyContactExists, async (req, res, next) => {
   try {
     const contact = await getContactById(req.params.contactId);
     if (!contact) {
@@ -55,6 +39,7 @@ router.post("/", validate(addContactSchema, "body"), async (req, res, next) => {
 
 router.put(
   "/:contactId",
+  verifyContactExists,
   validate(updateContactSchema, "body"),
   async (req, res, next) => {
     try {
@@ -72,7 +57,27 @@ router.put(
   }
 );
 
-router.delete("/:contactId", async (req, res, next) => {
+router.patch(
+  "/:contactId/favorite",
+  verifyContactExists,
+  validate(updateFavoriteSchema, "body"),
+  async (req, res, next) => {
+    try {
+      const updatedContact = await updateFavoriteStatus(
+        req.params.contactId,
+        req.body
+      );
+      if (!updatedContact) {
+        throw new HttpError(404, "Not Found");
+      }
+      res.json(updatedContact);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete("/:contactId", verifyContactExists, async (req, res, next) => {
   try {
     const deleted = await removeContact(req.params.contactId);
     if (!deleted) {
