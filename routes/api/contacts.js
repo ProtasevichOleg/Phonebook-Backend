@@ -1,8 +1,10 @@
 const express = require("express");
-const { schemas, contactOperations } = require("../../models");
+const { contactOperations } = require("../../models");
+const { contactSchemas } = require("../../schemas");
 const { listContacts, getContactById, removeContact } = contactOperations;
 const { addContact, updateContact, updateFavoriteStatus } = contactOperations;
-const { addContactSchema, updateContactSchema, updateFavoriteSchema } = schemas;
+const { addContactSchema, updateContactSchema, updateFavoriteSchema } =
+  contactSchemas;
 
 const router = express.Router();
 const { HttpError, validate, verifyContactExists } = require("../../helpers");
