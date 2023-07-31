@@ -1,4 +1,4 @@
-const { ContactModel } = require("./contactModel");
+const { ContactModel } = require("../models");
 
 const listContacts = async () => {
   return await ContactModel.find({});
@@ -32,7 +32,7 @@ const updateFavoriteStatus = async (contactId, body) => {
   );
 };
 
-const contactOperations = {
+module.exports = {
   listContacts,
   getContactById,
   removeContact,
@@ -40,5 +40,3 @@ const contactOperations = {
   updateContact,
   updateFavoriteStatus,
 };
-
-module.exports = contactOperations;

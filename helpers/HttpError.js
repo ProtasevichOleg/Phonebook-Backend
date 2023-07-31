@@ -19,4 +19,4 @@ const messages = {
   default: "Something went wrong, please try again later...",
 };
 
-exports.HttpError = HttpError;
+module.exports = HttpError;
