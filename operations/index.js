@@ -1,19 +1,15 @@
 const {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-  updateFavoriteStatus,
+  listContactsOperation,
+  getContactByIdOperation,
+  removeContactByIdOperation,
+  addContactOperation,
+  updateContactOperation,
 } = require("./contactOperations");
-const { test } = require("./userOperations");
 
 module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-  updateFavoriteStatus,
-  test,
+  listContactsOperation,
+  getContactByIdOperation,
+  removeContactByIdOperation,
+  addContactOperation,
+  updateContactOperation,
 };

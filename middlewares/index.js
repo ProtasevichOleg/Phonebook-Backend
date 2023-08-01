@@ -1,15 +1,15 @@
 const ctrlWrapper = require("./ctrlWrapper");
-const handleMongooseError = require("./handleMongooseError");
 const validate = require("./validate");
 const {
   verifyValidContactId,
   verifyContactExists,
 } = require("./verifyContact");
+const authenticate = require("./authenticate");
 
 module.exports = {
   ctrlWrapper,
-  handleMongooseError,
   validate,
   verifyContactExists,
   verifyValidContactId,
+  authenticate,
 };

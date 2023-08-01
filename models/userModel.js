@@ -1,4 +1,4 @@
-const { handleMongooseError } = require("../middlewares");
+const handleMongooseError = require("../middlewares/handleMongooseError");
 const { Schema, model } = require("mongoose");
 
 const { EMAIL_REGEX } = require("../helpers");
@@ -21,7 +21,10 @@ const userSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
-    token: String,
+    token: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false, timestamps: true }
 );

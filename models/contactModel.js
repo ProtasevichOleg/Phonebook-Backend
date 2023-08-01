@@ -1,4 +1,5 @@
-const { handleMongooseError } = require("../middlewares");
+const handleMongooseError = require("../middlewares/handleMongooseError");
+
 const { Schema, model } = require("mongoose");
 
 const contactSchema = new Schema(
@@ -20,6 +21,7 @@ const contactSchema = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
