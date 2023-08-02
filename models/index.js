@@ -1,4 +1,4 @@
-const { ContactModel, schemas } = require("./contactModel");
-const contactOperations = require("./contactOperations");
+const ContactModel = require("./contactModel");
+const UserModel = require("./userModel");
 
-module.exports = { ContactModel, schemas, contactOperations };
+module.exports = { ContactModel, UserModel };

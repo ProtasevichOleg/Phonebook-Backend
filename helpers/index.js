@@ -1,12 +1,4 @@
 const HttpError = require("./HttpError");
-const validate = require("./validate");
-const handleMongooseError = require("./handleMongooseError");
-const verifyContactExists = require("./verifyContactExists");
+const { EMAIL_REGEX } = require("./constants");
 
-
-module.exports = {
-  HttpError,
-  validate,
-  handleMongooseError,
-  verifyContactExists,
-};
+module.exports = { HttpError, EMAIL_REGEX };

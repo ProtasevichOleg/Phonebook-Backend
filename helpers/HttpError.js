@@ -10,7 +10,7 @@ const messages = {
   201: "Created",
   204: "No Content",
   400: "Client Error",
-  401: "Unauthorized",
+  401: "Not authorized",
   403: "Forbidden",
   404: "Not Found",
   409: "Conflict",
@@ -19,4 +19,4 @@ const messages = {
   default: "Something went wrong, please try again later...",
 };
 
-exports.HttpError = HttpError;
+module.exports = HttpError;

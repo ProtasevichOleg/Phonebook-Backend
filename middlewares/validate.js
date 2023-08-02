@@ -1,6 +1,6 @@
-const HttpError = require("./HttpError");
+const { HttpError } = require("../helpers");
 
-const validate = (schema, property) => {
+const validate = (schema, property = "body") => {
   return (req, res, next) => {
     const { error } = schema.validate(req[property]);
     if (error) {
