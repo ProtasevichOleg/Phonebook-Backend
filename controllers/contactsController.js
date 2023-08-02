@@ -6,17 +6,18 @@ const {
   addContactOperation,
   updateContactOperation,
 } = require("../operations");
+const { ctrlWrapper } = require("../middlewares");
 
-const listContacts = async (req, res, next) => {
+const listContacts = ctrlWrapper(async (req, res, next) => {
   try {
     const contacts = await listContactsOperation(req);
     res.json(contacts);
   } catch (error) {
     next(error);
   }
-};
+});
 
-const getContactById = async (req, res, next) => {
+const getContactById = ctrlWrapper(async (req, res, next) => {
   try {
     const contact = await getContactByIdOperation(
       req.user._id,
@@ -29,9 +30,9 @@ const getContactById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
-const removeContactById = async (req, res, next) => {
+const removeContactById = ctrlWrapper(async (req, res, next) => {
   try {
     const deleted = await removeContactByIdOperation(
       req.user._id,
@@ -44,9 +45,9 @@ const removeContactById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
-const addContact = async (req, res, next) => {
+const addContact = ctrlWrapper(async (req, res, next) => {
   try {
     const newContact = await addContactOperation({
       ...req.body,
@@ -56,9 +57,9 @@ const addContact = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
-const updateContactById = async (req, res, next) => {
+const updateContactById = ctrlWrapper(async (req, res, next) => {
   try {
     const updatedContact = await updateContactOperation(
       req.user._id,
@@ -72,9 +73,9 @@ const updateContactById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
-const updateFavoriteStatusById = async (req, res, next) => {
+const updateFavoriteStatusById = ctrlWrapper(async (req, res, next) => {
   try {
     const updatedContact = await updateContactOperation(
       req.user._id,
@@ -88,7 +89,7 @@ const updateFavoriteStatusById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
 module.exports = {
   listContacts,

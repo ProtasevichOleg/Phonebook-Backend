@@ -1,10 +1,11 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { HttpError } = require("../helpers");
+const { ctrlWrapper } = require("../middlewares");
 const { UserModel } = require("../models");
 const { JWT_SECRET } = process.env;
 
-const register = async (req, res, next) => {
+const register = ctrlWrapper(async (req, res, next) => {
   try {
     const { email, password, subscription } = req.body;
 
@@ -35,9 +36,9 @@ const register = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
-const login = async (req, res, next) => {
+const login = ctrlWrapper(async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email });
@@ -63,9 +64,9 @@ const login = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
-const logout = async (req, res, next) => {
+const logout = ctrlWrapper(async (req, res, next) => {
   const { _id } = req.user;
   try {
     await UserModel.findByIdAndUpdate(_id, { token: "" });
@@ -73,14 +74,14 @@ const logout = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
-const getCurrentUser = async (req, res) => {
+const getCurrentUser = ctrlWrapper(async (req, res) => {
   const { email, subscription } = req.user;
   res.status(200).json({ email, subscription });
-};
+});
 
-const updateSubscription = async (req, res, next) => {
+const updateSubscription = ctrlWrapper(async (req, res, next) => {
   try {
     const { subscription } = req.body;
     const user = await UserModel.findByIdAndUpdate(
@@ -98,7 +99,7 @@ const updateSubscription = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+});
 
 module.exports = {
   register,

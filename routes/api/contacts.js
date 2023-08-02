@@ -8,7 +8,6 @@ const {
   validate,
   verifyContactExists,
   authenticate,
-  ctrlWrapper,
 } = require("../../middlewares");
 const {
   listContacts,
@@ -20,39 +19,25 @@ const {
 } = require("../../controllers");
 
 const router = express.Router();
-router.get(
-  "/",
-  authenticate,
-  ctrlWrapper(listContacts)
-);
+router.get("/", authenticate, listContacts);
 
-router.get(
-  "/:contactId",
-  authenticate,
-  verifyContactExists,
-  ctrlWrapper(getContactById)
-);
+router.get("/:contactId", authenticate, verifyContactExists, getContactById);
 
 router.delete(
   "/:contactId",
   authenticate,
   verifyContactExists,
-  ctrlWrapper(removeContactById)
+  removeContactById
 );
 
-router.post(
-  "/",
-  authenticate,
-  validate(addContactSchema),
-  ctrlWrapper(addContact)
-);
+router.post("/", authenticate, validate(addContactSchema), addContact);
 
 router.put(
   "/:contactId",
   authenticate,
   verifyContactExists,
   validate(updateContactSchema),
-  ctrlWrapper(updateContactById)
+  updateContactById
 );
 
 router.patch(
@@ -60,7 +45,7 @@ router.patch(
   authenticate,
   verifyContactExists,
   validate(updateFavoriteSchema),
-  ctrlWrapper(updateFavoriteStatusById)
+  updateFavoriteStatusById
 );
 
 module.exports = router;
