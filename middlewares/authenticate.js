@@ -7,7 +7,7 @@ const authenticate = async (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization") || "";
     const [bearer, token] = authorizationHeader.split(" ");
-    if (bearer !== "Bearer") {
+    if (bearer !== "Bearer" || !token) {
       throw new HttpError(401);
     }
     let userId;
