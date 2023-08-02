@@ -9,86 +9,62 @@ const {
 const { ctrlWrapper } = require("../middlewares");
 
 const listContacts = ctrlWrapper(async (req, res, next) => {
-  try {
-    const contacts = await listContactsOperation(req);
-    res.json(contacts);
-  } catch (error) {
-    next(error);
-  }
+  const contacts = await listContactsOperation(req);
+  res.json(contacts);
 });
 
 const getContactById = ctrlWrapper(async (req, res, next) => {
-  try {
-    const contact = await getContactByIdOperation(
-      req.user._id,
-      req.params.contactId
-    );
-    if (!contact) {
-      throw new HttpError(404);
-    }
-    res.json(contact);
-  } catch (error) {
-    next(error);
+  const contact = await getContactByIdOperation(
+    req.user._id,
+    req.params.contactId
+  );
+  if (!contact) {
+    throw new HttpError(404);
   }
+  res.json(contact);
 });
 
 const removeContactById = ctrlWrapper(async (req, res, next) => {
-  try {
-    const deleted = await removeContactByIdOperation(
-      req.user._id,
-      req.params.contactId
-    );
-    if (!deleted) {
-      throw new HttpError(404);
-    }
-    res.status(200).json({ message: "contact deleted" });
-  } catch (error) {
-    next(error);
+  const deleted = await removeContactByIdOperation(
+    req.user._id,
+    req.params.contactId
+  );
+  if (!deleted) {
+    throw new HttpError(404);
   }
+  res.status(200).json({ message: "contact deleted" });
 });
 
 const addContact = ctrlWrapper(async (req, res, next) => {
-  try {
-    const newContact = await addContactOperation({
-      ...req.body,
-      owner: req.user._id,
-    });
-    res.status(201).json(newContact);
-  } catch (error) {
-    next(error);
-  }
+  const newContact = await addContactOperation({
+    ...req.body,
+    owner: req.user._id,
+  });
+  res.status(201).json(newContact);
 });
 
 const updateContactById = ctrlWrapper(async (req, res, next) => {
-  try {
-    const updatedContact = await updateContactOperation(
-      req.user._id,
-      req.params.contactId,
-      req.body
-    );
-    if (!updatedContact) {
-      throw new HttpError(404);
-    }
-    res.json(updatedContact);
-  } catch (error) {
-    next(error);
+  const updatedContact = await updateContactOperation(
+    req.user._id,
+    req.params.contactId,
+    req.body
+  );
+  if (!updatedContact) {
+    throw new HttpError(404);
   }
+  res.json(updatedContact);
 });
 
 const updateFavoriteStatusById = ctrlWrapper(async (req, res, next) => {
-  try {
-    const updatedContact = await updateContactOperation(
-      req.user._id,
-      req.params.contactId,
-      req.body
-    );
-    if (!updatedContact) {
-      throw new HttpError(404, "Not Found");
-    }
-    res.json(updatedContact);
-  } catch (error) {
-    next(error);
+  const updatedContact = await updateContactOperation(
+    req.user._id,
+    req.params.contactId,
+    req.body
+  );
+  if (!updatedContact) {
+    throw new HttpError(404, "Not Found");
   }
+  res.json(updatedContact);
 });
 
 module.exports = {
