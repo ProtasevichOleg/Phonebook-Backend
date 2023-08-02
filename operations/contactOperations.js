@@ -5,10 +5,8 @@ const listContactsOperation = async (req) => {
   const { page = 1, limit = 10, favorite } = req.query;
   const skip = (page - 1) * limit;
 
-  const filter = {
-    owner: userId,
-    favorite: favorite?.toLowerCase() === "true" ?? undefined,
-  };
+  const filter = { owner: userId };
+  if (favorite !== undefined) filter.favorite = favorite === "true";
 
   const result = await ContactModel.find(filter, "-createdAt -updatedAt", {
     skip,
