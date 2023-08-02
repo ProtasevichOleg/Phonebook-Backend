@@ -9,7 +9,6 @@ const {
 
 const listContacts = async (req, res, next) => {
   try {
-    
     const contacts = await listContactsOperation(req);
     res.json(contacts);
   } catch (error) {
@@ -23,7 +22,9 @@ const getContactById = async (req, res, next) => {
       req.user._id,
       req.params.contactId
     );
-    if (!contact) throw new HttpError(404);
+    if (!contact) {
+      throw new HttpError(404);
+    }
     res.json(contact);
   } catch (error) {
     next(error);
@@ -36,7 +37,9 @@ const removeContactById = async (req, res, next) => {
       req.user._id,
       req.params.contactId
     );
-    if (!deleted) throw new HttpError(404);
+    if (!deleted) {
+      throw new HttpError(404);
+    }
     res.status(200).json({ message: "contact deleted" });
   } catch (error) {
     next(error);
@@ -62,7 +65,9 @@ const updateContactById = async (req, res, next) => {
       req.params.contactId,
       req.body
     );
-    if (!updatedContact) throw new HttpError(404);
+    if (!updatedContact) {
+      throw new HttpError(404);
+    }
     res.json(updatedContact);
   } catch (error) {
     next(error);
@@ -76,7 +81,9 @@ const updateFavoriteStatusById = async (req, res, next) => {
       req.params.contactId,
       req.body
     );
-    if (!updatedContact) throw new HttpError(404, "Not Found");
+    if (!updatedContact) {
+      throw new HttpError(404, "Not Found");
+    }
     res.json(updatedContact);
   } catch (error) {
     next(error);

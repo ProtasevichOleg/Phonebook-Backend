@@ -10,7 +10,9 @@ const register = async (req, res, next) => {
 
     const existingUser = await UserModel.findOne({ email });
 
-    if (existingUser) throw new HttpError(409, "Email in use");
+    if (existingUser) {
+      throw new HttpError(409, "Email in use");
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await UserModel.create({
@@ -39,10 +41,13 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email });
-    if (!user) throw new HttpError(401, "Email or password is wrong");
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect)
+    if (!user) {
       throw new HttpError(401, "Email or password is wrong");
+    }
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      throw new HttpError(401, "Email or password is wrong");
+    }
     const payload = { userId: user._id };
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
     user.token = token;
@@ -83,7 +88,9 @@ const updateSubscription = async (req, res, next) => {
       { subscription },
       { new: true }
     );
-    if (!user) throw new HttpError(404, "User not found");
+    if (!user) {
+      throw new HttpError(404, "User not found");
+    }
     res.json({
       email: user.email,
       subscription: user.subscription,

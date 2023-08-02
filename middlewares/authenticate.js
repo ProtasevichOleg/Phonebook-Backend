@@ -17,7 +17,9 @@ const authenticate = async (req, res, next) => {
       throw new HttpError(401);
     }
     const user = await UserModel.findById(userId);
-    if (!user || token !== user.token) throw new HttpError(401);
+    if (!user || token !== user.token) {
+      throw new HttpError(401);
+    }
     req.user = user;
     next();
   } catch (error) {
