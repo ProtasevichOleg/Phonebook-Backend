@@ -4,6 +4,7 @@ const {
   logout,
   getCurrentUser,
   updateSubscription,
+  updateAvatar,
 } = require("./authController");
 const {
   listContacts,
@@ -26,4 +27,5 @@ module.exports = {
   logout,
   getCurrentUser,
   updateSubscription,
+  updateAvatar,
 };

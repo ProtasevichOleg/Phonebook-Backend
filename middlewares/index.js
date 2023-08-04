@@ -5,6 +5,7 @@ const {
   verifyContactExists,
 } = require("./verifyContact");
 const authenticate = require("./authenticate");
+const upload = require("./upload");
 
 module.exports = {
   ctrlWrapper,
@@ -12,4 +13,5 @@ module.exports = {
   verifyContactExists,
   verifyValidContactId,
   authenticate,
+  upload,
 };

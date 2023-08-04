@@ -19,6 +19,7 @@ const {
 } = require("../../controllers");
 
 const router = express.Router();
+
 router.get("/", authenticate, listContacts);
 
 router.get("/:contactId", authenticate, verifyContactExists, getContactById);

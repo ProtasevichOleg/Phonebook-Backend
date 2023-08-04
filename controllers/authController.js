@@ -1,9 +1,15 @@
+// authController.js
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { HttpError } = require("../helpers");
 const { ctrlWrapper } = require("../middlewares");
 const { UserModel } = require("../models");
 const { JWT_SECRET } = process.env;
+const gravatar = require("gravatar");
+const jimp = require("jimp");
+const sharp = require("sharp");
+const fs = require("fs/promises");
+const path = require("path");
 
 const register = ctrlWrapper(async (req, res, next) => {
   const { email, password, subscription } = req.body;
@@ -15,10 +21,12 @@ const register = ctrlWrapper(async (req, res, next) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+  const avatarURL = gravatar.url(email, { s: "250", r: "pg", d: "mm" });
   const newUser = await UserModel.create({
     email,
     password: hashedPassword,
     subscription,
+    avatarURL,
   });
   const payload = { userId: newUser._id };
   const token = jwt.sign(payload, JWT_SECRET, {
@@ -85,10 +93,46 @@ const updateSubscription = ctrlWrapper(async (req, res, next) => {
   });
 });
 
+const updateAvatar = ctrlWrapper(async (req, res, next) => {
+  const { file } = req;
+  const { _id } = req.user;
+
+  const isSupportedByJimp = (format) => {
+    const supportedFormats = ["jpeg", "jpg", "png", "bmp", "tiff", "gif"];
+    return supportedFormats.includes(format);
+  };
+
+  const fileExtension = path.extname(file.originalname).slice(1);
+  let originalFilePath = null;
+  if (!isSupportedByJimp(fileExtension)) {
+    originalFilePath = file.path;
+    const convertedFilePath = `${file.path}.png`;
+    await sharp(file.path).toFile(convertedFilePath);
+    file.path = convertedFilePath;
+  }
+
+  const img = await jimp.read(file.path);
+  await img.resize(250, 250).writeAsync(file.path);
+
+  const fileName = `${_id}${path.extname(file.path)}`;
+  const newLocation = path.join("public", "avatars", fileName);
+  await fs.rename(file.path, newLocation);
+
+  if (originalFilePath) {
+    await fs.unlink(originalFilePath);
+  }
+
+  const avatarURL = `/avatars/${fileName}`;
+  await UserModel.findByIdAndUpdate(_id, { avatarURL });
+
+  res.json({ avatarURL });
+});
+
 module.exports = {
   register,
   login,
   logout,
   getCurrentUser,
   updateSubscription,
+  updateAvatar,
 };
