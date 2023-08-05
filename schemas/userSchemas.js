@@ -9,9 +9,17 @@ const registerSchema = Joi.object({
     .default("starter"),
 });
 
+const resendVerificationSchema = Joi.object({
+  email: Joi.string().pattern(EMAIL_REGEX).required(),
+});
+
 const loginSchema = Joi.object({
   email: Joi.string().pattern(EMAIL_REGEX).required(),
   password: Joi.string().min(6).required(),
 });
 
-module.exports = { registerSchema, loginSchema };
+module.exports = {
+  registerSchema,
+  resendVerificationSchema,
+  loginSchema,
+};

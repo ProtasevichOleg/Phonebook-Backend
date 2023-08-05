@@ -1,5 +1,7 @@
 const {
   register,
+  verifyEmail,
+  resendVerifyEmail,
   login,
   logout,
   getCurrentUser,
@@ -23,6 +25,8 @@ module.exports = {
   updateContactById,
   updateFavoriteStatusById,
   register,
+  verifyEmail,
+  resendVerifyEmail,
   login,
   logout,
   getCurrentUser,
