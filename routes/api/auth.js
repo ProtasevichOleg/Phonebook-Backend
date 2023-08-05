@@ -1,11 +1,27 @@
 const express = require("express");
-const { registerSchema, loginSchema } = require("../../schemas");
+const {
+  registerSchema,
+  loginSchema,
+  resendVerificationSchema,
+} = require("../../schemas");
 const { validate, authenticate, upload } = require("../../middlewares");
-const { register, login, logout, updateAvatar } = require("../../controllers");
-const { getCurrentUser, updateSubscription } = require("../../controllers");
+const {
+  register,
+  verifyEmail,
+  resendVerifyEmail,
+  login,
+  logout,
+  getCurrentUser,
+  updateSubscription,
+  updateAvatar,
+} = require("../../controllers");
 const router = express.Router();
 
 router.post("/register", validate(registerSchema), register);
+
+router.get("/verify/:verificationToken", verifyEmail);
+
+router.post("/verify", validate(resendVerificationSchema), resendVerifyEmail);
 
 router.post("/login", validate(loginSchema), login);
 
