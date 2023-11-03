@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { HttpError, sendEmail } = require("../helpers");
 const { ctrlWrapper } = require("../middlewares");
 const { UserModel } = require("../models");
-const { JWT_SECRET, BASE_URL } = process.env;
+const { JWT_SECRET, BASE_URL, FRONTEND_URL } = process.env;
 const gravatar = require("gravatar");
 const jimp = require("jimp");
 const sharp = require("sharp");
@@ -60,9 +60,16 @@ const verifyEmail = ctrlWrapper(async (req, res) => {
     verificationToken: "",
   });
 
-  res.status(200).json({
-    message: "Verification successful",
+  const payload = { userId: user._id };
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true, // включити для HTTPS
+    maxAge: 82800000, // 23 години
   });
+
+  return res.redirect(`${FRONTEND_URL}/Phonebook-Frontend/contacts`);
 });
 
 const resendVerifyEmail = ctrlWrapper(async (req, res) => {
