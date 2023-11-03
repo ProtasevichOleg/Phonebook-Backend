@@ -2,6 +2,7 @@ const Joi = require("joi");
 const { EMAIL_REGEX } = require("../helpers");
 
 const registerSchema = Joi.object({
+  name: Joi.string(),
   email: Joi.string().pattern(EMAIL_REGEX).required(),
   password: Joi.string().min(6).required(),
   subscription: Joi.string()

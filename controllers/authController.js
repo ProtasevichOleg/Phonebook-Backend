@@ -12,7 +12,7 @@ const path = require("path");
 const { nanoid } = require("nanoid");
 
 const register = ctrlWrapper(async (req, res, next) => {
-  const { email, password, subscription } = req.body;
+  const { name, email, password, subscription } = req.body;
 
   const existingUser = await UserModel.findOne({ email });
 
@@ -25,6 +25,7 @@ const register = ctrlWrapper(async (req, res, next) => {
   const verificationToken = nanoid();
 
   const newUser = await UserModel.create({
+    name,
     email,
     password: hashedPassword,
     subscription,

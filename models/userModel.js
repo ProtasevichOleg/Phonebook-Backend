@@ -10,6 +10,9 @@ const userSchema = new Schema(
       minlength: 6,
       required: [true, "Set password for user"],
     },
+    name: {
+      type: String,
+    },
     email: {
       type: String,
       match: EMAIL_REGEX,
@@ -35,7 +38,6 @@ const userSchema = new Schema(
     },
     verificationToken: {
       type: String,
-      required: [true, "Verify token is required"],
       default: "",
     },
   },
