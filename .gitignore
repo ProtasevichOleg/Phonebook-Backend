@@ -27,3 +27,5 @@ yarn-error.log*
 #Junk
 .idea
 .vscode
+*.sh
+buffer.txt

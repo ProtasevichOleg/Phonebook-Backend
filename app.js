@@ -8,10 +8,18 @@ const { contactsRouter, authRouter } = require("./routes");
 
 const app = express();
 
+const frontendUrl = process.env.FRONTEND_URL;
+
+const corsOptions = {
+  origin: [frontendUrl, "http://localhost:3001"],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
