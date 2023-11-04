@@ -11,7 +11,7 @@ const app = express();
 const frontendUrl = process.env.FRONTEND_URL;
 
 const corsOptions = {
-  origin: frontendUrl,
+  origin: [frontendUrl, "http://localhost:3001"],
   credentials: true,
   optionsSuccessStatus: 200,
 };
