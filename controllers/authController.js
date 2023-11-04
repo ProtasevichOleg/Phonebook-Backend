@@ -65,8 +65,8 @@ const verifyEmail = ctrlWrapper(async (req, res) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: true, // включити для HTTPS
-    maxAge: 82800000, // 23 години
+    secure: BASE_URL.startsWith("https://"),
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 1 тиждень в мс
   });
 
   return res.redirect(`${FRONTEND_URL}/Phonebook-Frontend/contacts`);
