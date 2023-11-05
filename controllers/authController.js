@@ -43,8 +43,10 @@ const register = ctrlWrapper(async (req, res, next) => {
 
   res.status(201).json({
     user: {
+      name: newUser.name,
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL: newUser.avatarURL,
     },
   });
 });
@@ -119,8 +121,10 @@ const login = ctrlWrapper(async (req, res, next) => {
   res.status(200).json({
     token,
     user: {
+      name: user.name,
       email: user.email,
       subscription: user.subscription,
+      avatarURL: user.avatarURL,
     },
   });
 });
@@ -132,8 +136,8 @@ const logout = ctrlWrapper(async (req, res, next) => {
 });
 
 const getCurrentUser = ctrlWrapper(async (req, res) => {
-  const { email, subscription } = req.user;
-  res.status(200).json({ email, subscription });
+  const { name, email, subscription, avatarURL } = req.user;
+  res.status(200).json({ name, email, subscription, avatarURL });
 });
 
 const updateSubscription = ctrlWrapper(async (req, res, next) => {
