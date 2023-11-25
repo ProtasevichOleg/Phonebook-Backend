@@ -1,8 +1,8 @@
 const Joi = require("joi");
-const { CONTACT_NAME_REGEX, EMAIL_REGEX, PHONE_REGEX } = require("../helpers");
+const { EMAIL_REGEX, PHONE_REGEX } = require("../helpers");
 
 const addContactSchema = Joi.object({
-  name: Joi.string().pattern(CONTACT_NAME_REGEX).min(1).max(100).required(),
+  name: Joi.string().min(3).max(100).required(),
   email: Joi.string().pattern(EMAIL_REGEX).required(),
   phone: Joi.string().min(8).max(16).pattern(PHONE_REGEX).required(),
   favorite: Joi.boolean().optional(),
