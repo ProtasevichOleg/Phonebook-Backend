@@ -32,7 +32,9 @@ const removeContactById = ctrlWrapper(async (req, res, next) => {
   if (!deleted) {
     throw new HttpError(404);
   }
-  res.status(200).json({ message: "contact deleted" });
+  res
+    .status(200)
+    .json({ message: "contact deleted", contactId: req.params.contactId });
 });
 
 const addContact = ctrlWrapper(async (req, res, next) => {
