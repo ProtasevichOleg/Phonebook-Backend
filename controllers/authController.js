@@ -21,7 +21,13 @@ const register = ctrlWrapper(async (req, res, next) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const avatarURL = gravatar.url(email, { s: "250", r: "pg", d: "mm" });
+  const avatarURL = gravatar.url(email, {
+    s: "250",
+    r: "pg",
+    d: "mm",
+    protocol: "https",
+  });
+
   const verificationToken = nanoid();
 
   const newUser = await UserModel.create({
