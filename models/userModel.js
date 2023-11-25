@@ -1,7 +1,7 @@
 const handleMongooseError = require("../middlewares/handleMongooseError");
 const { Schema, model } = require("mongoose");
 
-const { NAME_REGEX, EMAIL_REGEX, PASSWORD_REGEX } = require("../helpers");
+const { NAME_REGEX, EMAIL_REGEX } = require("../helpers");
 
 const userSchema = new Schema(
   {

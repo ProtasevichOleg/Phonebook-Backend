@@ -1,17 +1,17 @@
 const Joi = require("joi");
-const { EMAIL_REGEX, PHONE_REGEX } = require("../helpers");
+const { CONTACT_NAME_REGEX, EMAIL_REGEX, PHONE_REGEX } = require("../helpers");
 
 const addContactSchema = Joi.object({
-  name: Joi.string().min(3).max(20).required(),
+  name: Joi.string().pattern(CONTACT_NAME_REGEX).min(1).max(100).required(),
   email: Joi.string().pattern(EMAIL_REGEX).required(),
-  phone: Joi.string().min(10).max(15).pattern(PHONE_REGEX).required(),
+  phone: Joi.string().min(8).max(16).pattern(PHONE_REGEX).required(),
   favorite: Joi.boolean().optional(),
 });
 
 const updateContactSchema = Joi.object({
-  name: Joi.string().min(3).optional(),
+  name: Joi.string().min(3).max(30).optional(),
   email: Joi.string().pattern(EMAIL_REGEX).optional(),
-  phone: Joi.string().min(10).max(15).optional(),
+  phone: Joi.string().min(8).max(16).optional(),
   favorite: Joi.boolean().optional(),
 }).or("name", "email", "phone");
 
